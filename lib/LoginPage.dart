@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:erg_app/InventoryPage.dart';
 
 void main() => runApp(
     MaterialApp(
@@ -111,19 +112,28 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 30,),
                   Container(
 
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.green,
-                    ),
+
                     child: Center(
-                      child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold), ),
+                      child: RaisedButton(
+                        padding: EdgeInsets.fromLTRB(145, 10, 145, 10),
+                        color: Colors.green,
+                        child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
+
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => InventoryPage()));
+                        },
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      ),
                     ),
 
+
+
                   ),
-                  SizedBox(height: 50,),
+                  SizedBox(height: 20,),
                   Container(
-                    padding: EdgeInsets.only(top: 15.0, left: 20.0),
+                    padding: EdgeInsets.only(top: 1, left: 190.0),
                     child: InkWell(
                       child: Text(
                         'Forgot Password',
@@ -147,3 +157,5 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
+
