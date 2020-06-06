@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
     _scaleController = AnimationController(
         vsync: this,
-        duration: Duration(milliseconds: 300)
+        duration: Duration(milliseconds: 200)
     );
 
     _scaleAnimation = Tween<double>(
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
     _widthController = AnimationController(
         vsync: this,
-        duration: Duration(milliseconds: 600)
+        duration: Duration(milliseconds: 400)
     );
 
     _widthAnimation = Tween<double>(
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
     _positionController = AnimationController(
         vsync: this,
-        duration: Duration(milliseconds: 1000)
+        duration: Duration(milliseconds: 400)
     );
 
     _positionAnimation = Tween<double>(
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
 
     _scale2Controller = AnimationController(
         vsync: this,
-        duration: Duration(milliseconds: 300)
+        duration: Duration(milliseconds: 400)
     );
 
     _scale2Animation = Tween<double>(
@@ -105,20 +105,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
         width: double.infinity,
         child: Stack(
           children: <Widget>[
-            Positioned(
-              top: -50,
-              left: 0,
-              child: FadeAnimation(1, Container(
-                width: width,
-                height: 400,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/one.png'),
-                        fit: BoxFit.cover
-                    )
-                ),
-              )),
-            ),
+            
             Positioned(
               top: 100,
               left: 30,
@@ -133,34 +120,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                 ),
               )),
             ),
-            Positioned(
-              top: -150,
-              left: 0,
-              child: FadeAnimation(1.6, Container(
-                width: width,
-                height: 400,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/one.png'),
-                        fit: BoxFit.cover
-                    )
-                ),
-              )),
-            ),
+           
             Container(
               padding: EdgeInsets.all(20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-
-
-//                  FadeAnimation(1, Text("Welcome",
-//                    style: TextStyle(color: Colors.white, fontSize: 50),)),
-//                  SizedBox(height: 15,),
-//                  FadeAnimation(1.3, Text("To ERG-AGRO Limited. Lets get started.",
-//                    style: TextStyle(color: Colors.white.withOpacity(.7), height: 1.4, fontSize: 20),)),
-//                  SizedBox(height: 180,),
                   FadeAnimation(1.6, AnimatedBuilder(
                     animation: _scaleController,
                     builder: (context, child) => Transform.scale(

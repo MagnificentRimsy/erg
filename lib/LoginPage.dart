@@ -8,13 +8,13 @@ void main() => runApp(
     )
 );
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatelessWidget { 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Container(
               height: 250,
@@ -78,6 +78,7 @@ class LoginPage extends StatelessWidget {
                           )
                         ]
                     ),
+                    
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -85,7 +86,7 @@ class LoginPage extends StatelessWidget {
                           decoration: BoxDecoration(
                               border: Border(bottom: BorderSide(color: Colors.grey[100]))
                           ),
-                          child: TextField(
+                           child: TextField(
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "example@mail.com",
@@ -94,8 +95,6 @@ class LoginPage extends StatelessWidget {
                           ),
 
                         ),
-
-
                         Container(
                           padding: EdgeInsets.all(8.0),
                           child: TextField(
@@ -111,14 +110,11 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: 30,),
                   Container(
-
-
                     child: Center(
                       child: RaisedButton(
                         padding: EdgeInsets.fromLTRB(145, 10, 145, 10),
                         color: Colors.green,
                         child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
-
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => InventoryPage()));
                         },
@@ -127,10 +123,8 @@ class LoginPage extends StatelessWidget {
                       ),
                       ),
                     ),
-
-
-
                   ),
+
                   SizedBox(height: 20,),
                   Container(
                     padding: EdgeInsets.only(top: 1, left: 190.0),
