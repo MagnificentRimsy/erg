@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:erg_app/ScanPage.dart';
+
 
 void main() => runApp(
     MaterialApp(
@@ -124,7 +126,7 @@ class InventoryPage extends StatelessWidget {
                         color: Colors.green,
                         child: Text("Post Inventory", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => InventoryPage()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
                         },
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
