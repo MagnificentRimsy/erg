@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:erg_app/ScanPage.dart';
 
+import 'ProfilePage.dart';
 
 void main() => runApp(
     MaterialApp(
@@ -17,9 +17,10 @@ class InventoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {   
     return Scaffold(
-      appBar: AppBar(title: Text('Daily Stock Taking'),
-      iconTheme: IconThemeData(color: Colors.white),
-      backgroundColor: Colors.green, 
+      appBar: AppBar(
+        title: Text('Daily Stock Taking', textAlign: TextAlign.center,),
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.green, 
       ),
       body: Container(
         child: ListView(
@@ -40,7 +41,7 @@ class InventoryPage extends StatelessWidget {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         labelText: 'Quantity',
-                        hintText: 'Enter Cost Quantity',
+                        hintText: 'Enter Cost Transportation',
                         border:OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))
                     ),
                   )),
@@ -126,7 +127,7 @@ class InventoryPage extends StatelessWidget {
                         color: Colors.green,
                         child: Text("Post Inventory", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
                         },
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),

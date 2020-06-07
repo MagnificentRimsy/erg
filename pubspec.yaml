@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # barcode_scan: any
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -34,7 +35,7 @@ dev_dependencies:
     sdk: flutter
   simple_animations: ^1.1.3
   page_transition: ^1.1.4
-  barcode_scan: any
+ 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
