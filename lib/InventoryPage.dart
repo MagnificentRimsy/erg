@@ -119,6 +119,7 @@ class InventoryPage extends StatelessWidget {
                   )),  
                 ],
               )),  
+            
               SizedBox(height: 30,),
                   Container(
                     child: Center(

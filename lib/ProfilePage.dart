@@ -187,7 +187,7 @@ class ProfilePage extends StatelessWidget {
                           EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
                       child: ListTile(
                         leading: Text(
-                            'Geo Coordinate:',
+                            'Geo Coord.:',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'SourceSansPro',
@@ -207,7 +207,7 @@ class ProfilePage extends StatelessWidget {
                       margin: EdgeInsets.only(top: 20, bottom: 30),
                       child: Center(
                         child: RaisedButton(
-                          padding: EdgeInsets.fromLTRB(145, 10, 145, 10),
+                          padding: EdgeInsets.fromLTRB(80, 10, 80, 10),
                           color: Colors.green,
                           child: Text("Complete", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
                           onPressed: () {
@@ -219,12 +219,10 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                   ),
-
-
               ],
-
           ),
         ),
+        
       ),
     );
   }
