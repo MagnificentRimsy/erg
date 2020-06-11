@@ -1,21 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:erg_app/InventoryPage.dart';
+import 'package:erg_app/StockPage.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter/semantics.dart';
-// void main() => runApp(MyApp());
-
-// class MyApp extends StatelessWidget{
-//   @override 
-//   Widget build (BuildContext context){
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: LoginPage(),
-//     );
-//   }
-// }
 
 class LoginPage extends StatefulWidget{
   @override 
@@ -85,7 +73,7 @@ class LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.all(30.0),
               child: Column(
                 children: <Widget>[
-                  
+    
                   // inputs
                     textSection(),
                   // end of inputs
@@ -188,13 +176,12 @@ Container buttonSection(){
       child: RaisedButton(
           padding: EdgeInsets.fromLTRB(80, 10, 80, 10),
           color: Colors.green,
-          highlightColor: Colors.green, //Replace with actual colors
           child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
           // onPressed: () {
-          //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => InventoryPage()));
+          //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => StockPage()));
           // },
 
-        onPressed: emailController.text == "" || passwordController.text == "" ? null : () {
+           onPressed:emailController.text == "" || passwordController.text == "" ? null : () {
             setState(() {
               _isLoading = true;
             });
@@ -217,7 +204,13 @@ Container buttonSection(){
       'password': pass
     };
     var jsonResponse = null;
-    var response = await http.post("http://localhost:3000/users", body: data);
+    var response = await http.post(
+      "http://localhost:3000/users", 
+      body: data,
+      headers: {
+          'Content-Type': 'application/json',
+      },
+    );
     if(response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       if(jsonResponse != null) {
@@ -225,7 +218,7 @@ Container buttonSection(){
           _isLoading = false;
         });
         sharedPreferences.setString("token", jsonResponse['token']);
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => InventoryPage()), (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => StockPage()), (Route<dynamic> route) => false);
       }
     }
     else {
