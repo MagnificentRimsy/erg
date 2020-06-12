@@ -22,6 +22,7 @@ class LoginPageState extends State<LoginPage> {
       body: Container(
         child: _isLoading ? Center(child: CircularProgressIndicator()) : ListView(
           children: <Widget>[
+            
             Container(
               height: 250,
               decoration: BoxDecoration(
@@ -176,17 +177,18 @@ Container buttonSection(){
       child: RaisedButton(
           padding: EdgeInsets.fromLTRB(80, 10, 80, 10),
           color: Colors.green,
-          child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
-          // onPressed: () {
-          //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => StockPage()));
-          // },
-
-           onPressed:emailController.text == "" || passwordController.text == "" ? null : () {
-            setState(() {
-              _isLoading = true;
-            });
-            signIn(emailController.text, passwordController.text);
+          child: Text(
+            _isLoading ? 'Loading...': 'Login', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => StockPage()));
           },
+
+          //  onPressed:emailController.text == "" || passwordController.text == "" ? null : () {
+          //   setState(() {
+          //     _isLoading = true;
+          //   });
+          //   signIn(emailController.text, passwordController.text);
+          // },
         elevation: 0.0,
           shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),

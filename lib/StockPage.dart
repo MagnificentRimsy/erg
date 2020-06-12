@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+// import 'package:erg_app/CaptureInputsPage.dart';
+// import 'package:erg_app/ScanPage.dart';
 import 'package:erg_app/ProfilePage.dart';
+
 
 void main() => runApp(
     MaterialApp(
@@ -23,12 +27,17 @@ class StockPage extends StatelessWidget {
 }
 
 class StockInventory extends StatefulWidget {
+  
+  StockInventory({Key key}) : super(key: key); //Find out meaning
+
   @override
   _StockInventoryState createState() => _StockInventoryState();
 }
 
 
 class _StockInventoryState extends State<StockInventory> {
+
+
    List<Products> products;
   List<Products> selectedProducts;
   bool sort;
@@ -141,9 +150,8 @@ class _StockInventoryState extends State<StockInventory> {
                                   },
                                 ),
                               ]),
-                        )
-                        .toList(),
-                  ),          
+                        ).toList(),
+                    ),          
                 ),
                 Container(
                     child: Center(
@@ -153,6 +161,7 @@ class _StockInventoryState extends State<StockInventory> {
                         child: Text("Post Inventory", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
+                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => CaptureInputsPage()));
                         },
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
@@ -183,10 +192,16 @@ class Products {
       Products(count:"3", name: "Spray", itemqty: "150", measuringunit: "bottles",),
     ];
   }
+
+
 }
 
 
 void showSimpleCustomDialog(BuildContext context) {
+  String dropdownValue = 'SelectItem';
+  
+  // TextEditingController _controller = TextEditingController(text: dropdownValue);
+
     Dialog simpleDialog = Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -209,27 +224,29 @@ void showSimpleCustomDialog(BuildContext context) {
                   ),
                   Container(width: 2,),
                   Container(
-                    // decoration: ShapeDecoration(
-                    //   shape: RoundedRectangleBorder(
-                    //     side: BorderSide(width: 10.0, style: BorderStyle.solid),
-                    //     borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        
-                    //   ),
-                    // ),
+                 
                     child:DropdownButton<String>(
-                      items: <String>['Fertilizers', 'Bags', 'Spray', 'Equipments'].map((String value) {
-                        return new DropdownMenuItem<String>(
+                      value: dropdownValue,
+
+                       onChanged: (String newValue) {
+                        // This set state is trowing an error
+                        // setState((){
+                        //   dropdownValue = newValue;
+                        // });
+                      },
+
+                      items: <String>['Fertilizers', 'Bags', 'Spray', 'Equipments']
+                      .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
                           value: value,
                           child: new Text(value),
                         );
-                      }).toList(),
-                      
-                      onChanged: (String value) {},
-                    )
+                      })
+                      .toList(),        
+                    ),
                   ),
-        
                 ],
-              )),  
+              )), 
             
             Padding( 
                 padding: EdgeInsets.only(top:5, bottom: 5, left: 30, right: 10),
@@ -290,8 +307,10 @@ void showSimpleCustomDialog(BuildContext context) {
         ),
       ),
     );
-    showDialog(
-        context: context, builder: (BuildContext context) => simpleDialog);
+    showDialog(context: context, builder: (BuildContext context) => simpleDialog);  
+
+   
 }
+
 
 // Dropdown Menu Class below

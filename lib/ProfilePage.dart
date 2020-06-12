@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:erg_app/ScanPage.dart';
+import 'package:erg_app/CaptureInputsPage.dart';
 
 void main() {
   runApp(ProfilePage());
@@ -211,7 +211,7 @@ class ProfilePage extends StatelessWidget {
                           color: Colors.green,
                           child: Text("Complete", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanPage()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CaptureInputsPage()));
                           },
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),

@@ -60,6 +60,7 @@ class ScanPageState extends State<ScanPage> {
           result,
           style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
         ),
+        
       ),
   
   floatingActionButton: FloatingActionButton.extended(
@@ -69,6 +70,8 @@ class ScanPageState extends State<ScanPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+
+    
   }
 }
 
