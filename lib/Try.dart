@@ -63,68 +63,79 @@ class _StockInventoryState extends State<StockInventory> {
           body: Container(
             child: ListView(
               children: <Widget>[
-                Container(
-                        child: DataTable(
-              sortAscending: sort,
-              sortColumnIndex: 0,
-              columns: [
-                DataColumn(
-                  label: Text("S/No", style: TextStyle(fontSize: 16)),
-                  numeric: false,
-                ),
-                DataColumn(
-                    label: Text("Item", style: TextStyle(fontSize: 16)),
-                    numeric: false,
-                    onSort: (columnIndex, ascending) {
-                      setState(() {
-                        sort = !sort;
-                      });
-                      onSortColum(columnIndex, ascending);
-                    }),
-                DataColumn(
-                  label: Text("QtyInStock", style: TextStyle(fontSize: 16)),
-                  numeric: false,
-                ),
-                DataColumn(
-                  label: Text("Unit", style: TextStyle(fontSize: 16)),
-                  numeric: false,
-                ),
-              ],
-              rows: products
-                  .map(
-                    (product) => DataRow(
-                        selected: selectedProducts.contains(product),
-                        cells: [
-                          DataCell(
-                            Text(product.count),
-                            onTap: () {
-                              print('Selected ${product.count}');
-                            },
-                          ),
-                          DataCell(
-                            Text(product.name),
-                            onTap: () {
-                              print('Selected ${product.name}');
-                            },
-                          ),
-                          DataCell(
-                            Text(product.itemqty),
-                            onTap: () {
-                              print('Selected ${product.itemqty}');
-                            },
-                          ),
-                          DataCell(
-                            Text(product.itemqty),
-                             onTap: () {
-                              print('Selected ${product.itemqty}');
-                            },
-                          ),
-                        ]),
-                  )
-                  .toList(),
-            ),
+
+                 new Container(
+              width: 100.00,
+              height: 100.00,
+              decoration: new BoxDecoration(
+              image: new DecorationImage(
+                  image: AssetImage('assets/images/icon.png'),
+                  fit: BoxFit.fitHeight,
+                  ),
+            )),
+            //     Container(
+                       
+            //             child: DataTable(
+            //   sortAscending: sort,
+            //   sortColumnIndex: 0,
+            //   columns: [
+            //     DataColumn(
+            //       label: Text("S/No", style: TextStyle(fontSize: 16)),
+            //       numeric: false,
+            //     ),
+            //     DataColumn(
+            //         label: Text("Item", style: TextStyle(fontSize: 16)),
+            //         numeric: false,
+            //         onSort: (columnIndex, ascending) {
+            //           setState(() {
+            //             sort = !sort;
+            //           });
+            //           onSortColum(columnIndex, ascending);
+            //         }),
+            //     DataColumn(
+            //       label: Text("QtyInStock", style: TextStyle(fontSize: 16)),
+            //       numeric: false,
+            //     ),
+            //     DataColumn(
+            //       label: Text("Unit", style: TextStyle(fontSize: 16)),
+            //       numeric: false,
+            //     ),
+            //   ],
+            //   rows: products
+            //       .map(
+            //         (product) => DataRow(
+            //             selected: selectedProducts.contains(product),
+            //             cells: [
+            //               DataCell(
+            //                 Text(product.count),
+            //                 onTap: () {
+            //                   print('Selected ${product.count}');
+            //                 },
+            //               ),
+            //               DataCell(
+            //                 Text(product.name),
+            //                 onTap: () {
+            //                   print('Selected ${product.name}');
+            //                 },
+            //               ),
+            //               DataCell(
+            //                 Text(product.itemqty),
+            //                 onTap: () {
+            //                   print('Selected ${product.itemqty}');
+            //                 },
+            //               ),
+            //               DataCell(
+            //                 Text(product.itemqty),
+            //                  onTap: () {
+            //                   print('Selected ${product.itemqty}');
+            //                 },
+            //               ),
+            //             ]),
+            //       )
+            //       .toList(),
+            // ),
                   
-                ),
+            //     ),
                 Container(
                     child: Center(
                       child: RaisedButton(

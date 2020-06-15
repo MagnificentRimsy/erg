@@ -1,68 +1,323 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'package:erg_app/login_page.dart';
+import 'package:erg_app/widgets/nav-drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:erg_app/api/api.dart';
+import 'package:erg_app/StockPage.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(Home());
 
-class MyApp extends StatelessWidget {
+/// This Widget is the main application widget.
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Welcome",
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
-      theme: ThemeData(
-        accentColor: Colors.white70
+      home: Scaffold(
+        drawer: NavDrawer(),
+        appBar: AppBar(
+          title: Text('Dashboard'),
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: Colors.green,
+        ),
+        body: Center(
+          child: MyStatefulWidget(),
+        ),
       ),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
+
   @override
-  _MainPageState createState() => _MainPageState();
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String dropdownValue = 'One';
 
-  SharedPreferences sharedPreferences;
-
+  var userData;
   @override
   void initState() {
+    _getUserInfo();
     super.initState();
-    checkLoginStatus();
   }
 
-  checkLoginStatus() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    if(sharedPreferences.getString("token") == null) {
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
-    }
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson);
+    setState(() {
+      userData = user;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("ERG App", style: TextStyle(color: Colors.white)),
-         backgroundColor: Colors.green,
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () {
-              sharedPreferences.clear();
-              sharedPreferences.commit();
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
-            },
-            child: Text("Log Out", style: TextStyle(color: Colors.white)),
+    return Container(
+      color: Colors.green[100],
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: <Widget>[
+          ////////////// 1st card///////////
+
+          Card(
+            elevation: 4.0,
+            color: Colors.white,
+            margin: EdgeInsets.only(left: 10, right: 10, top: 50, bottom: 10),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Container(
+              padding: EdgeInsets.only(left: 15, top: 20, bottom: 10),
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Icon(
+                          Icons.arrow_downward,
+                          color: Color(0xFFFF835F),
+                        ),
+                      ),
+                      Text(
+                        'Downloaded Data',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Color(0xFF9b9b9b),
+                          fontSize: 12,
+                          decoration: TextDecoration.none,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Icon(
+                          Icons.camera_rear,
+                          color: Color(0xFFFF835F),
+                        ),
+                      ),
+                      Text(
+                        'Data Scanned',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: Color(0xFF9b9b9b),
+                          fontSize: 10,
+                          decoration: TextDecoration.none,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 35),
+                        child: Text(
+                          userData != null
+                              ? '${userData['firstName']}'
+                              : '134569',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Color(0xFF9b9b9b),
+                            fontSize: 17.0,
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 120),
+                        child: Text(
+                          userData != null
+                              ? '${userData['firstName']}'
+                              : '452355',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: Color(0xFF9b9b9b),
+                            fontSize: 15.0,
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                      Container(height: 20,),
+                  Row(
+                    children: <Widget>[
+                      /////////// Download Button /////////////
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: FlatButton(
+                        
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 8, bottom: 8, left: 10, right: 10),
+                            child: Text(
+                              'Download data',
+                              textDirection: TextDirection.ltr,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          color: Colors.green,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => Home()));
+                            // Edit()was here
+                          },
+                        ),
+                      ),
+
+                      /////////// Upload Button /////////////
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: FlatButton(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 8, bottom: 8, left: 10, right: 10),
+                            child: Text(
+                              'Upload data',
+                              textDirection: TextDirection.ltr,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          color: Colors.blueGrey,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => Home()));
+                            // Edit()was here
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
+
+          /////////////// Button////////////
+          Padding(
+            padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                /////////// Edit Button /////////////
+                // Padding(
+                //   padding: const EdgeInsets.all(10.0),
+                //   child: FlatButton(
+                //     child: Padding(
+                //       padding: EdgeInsets.only(
+                //           top: 8, bottom: 8, left: 10, right: 10),
+                //       child: Text(
+                //         'Download data',
+                //         textDirection: TextDirection.ltr,
+                //         style: TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 15.0,
+                //           decoration: TextDecoration.none,
+                //           fontWeight: FontWeight.normal,
+                //         ),
+                //       ),
+                //     ),
+                //     color: Color(0xFF68FA1E),
+                //     shape: new RoundedRectangleBorder(
+                //         borderRadius: new BorderRadius.circular(20.0)),
+                //     onPressed: () {
+                //       Navigator.push(context,
+                //           new MaterialPageRoute(builder: (context) => Home()));
+                //       // Edit()was here
+                //     },
+                //   ),
+                // ),
+
+                ////////////// logout//////////
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 220),
+                  child: FlatButton(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 8, bottom: 8, left: 10, right: 10),
+                      child: Text(
+                        'Scan New Card',
+                        textDirection: TextDirection.ltr,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                          decoration: TextDecoration.none,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                    color: Colors.blue,
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(20.0)),
+                    onPressed: () {
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) => StockPage()));
+                      // Edit()was here
+                    },
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
-      body: Center(child: Text("Main Page")),
-      drawer: Drawer(),
+      // ),
     );
+
+    // return DropdownButton<String>(
+    //   value: dropdownValue,
+    //   icon: Icon(Icons.arrow_drop_down),
+    //   iconSize: 24,
+    //   elevation: 16,
+    //   style: TextStyle(color: Colors.green),
+    //   underline: Container(
+    //     height: 2,
+    //     color: Colors.deepPurpleAccent,
+    //   ),
+    //   onChanged: (String newValue) {
+    //     setState(() {
+    //       dropdownValue = newValue;
+    //     });
+    //   },
+    //   items: <String>['One', 'Two', 'Free', 'Four']
+    //       .map<DropdownMenuItem<String>>((String value) {
+    //     return DropdownMenuItem<String>(
+    //       value: value,
+    //       child: Text(value),
+    //     );
+    //   }).toList(),
+    // );
   }
 }
