@@ -1,8 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-// import 'package:tutorial_project/Home/homeScreen.dart';
-import 'package:erg_app/Try.dart';
 import 'package:erg_app/HomePage.dart';
 import 'package:erg_app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -224,7 +221,7 @@ class _LogInState extends State<LogIn> {
       Navigator.push(
           context,
           new MaterialPageRoute(
-              builder: (context) => LogIn())); //this goes to the Home
+              builder: (context) => Home())); //this goes to the Home
     } else {
       _showMsg(body['message']);
     }

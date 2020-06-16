@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:erg_app/services/weather_model.dart';
 
-
-
 class HttpService {
   final String postsURL = "http://api.ergagro.com:112/WeatherForecast";
 
@@ -19,22 +17,16 @@ class HttpService {
             (dynamic item) => Post.fromJson(item),
           )
           .toList();
-
-      print(posts);
       return posts;
-      
     } else {
       print(res.statusCode);
-
     }
   }
 
-
-
-    _setHeaders() => {
-        'Content-type' : 'application/json',
-        'Accept' : 'application/json',
-    };
+  _setHeaders() => {
+      'Content-type' : 'application/json',
+      'Accept' : 'application/json',
+  };
 }
 
 

@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+// /// This Widget is the main application widget.
+
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,10 @@ class CaptureInputsPage extends StatelessWidget {
       body: FutureBuilder(
         future: httpService.getPosts(),
         builder: (BuildContext context, AsyncSnapshot<List<Post>> snapshot) {
+          
+          //  if (snapshot.hasError == false) {
+          //     return Text ( "Has Data" );
+          //   }
           if (snapshot.hasData) {
           
             List<Post> posts = snapshot.data;
@@ -54,8 +61,10 @@ class CaptureInputsPage extends StatelessWidget {
                   )
                   .toList(),
             );
-          } else {
-            // return Center(child: CircularProgressIndicator());
+          } 
+          else {
+            return Text ( " ${snapshot.error} " );
+            // Center(child: CircularProgressIndicator());
           }
         },
       ),

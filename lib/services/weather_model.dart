@@ -21,4 +21,6 @@ class Post {
       summary: json['summary'] as String,
     );
   }
+
+  // todo: Map
 }
