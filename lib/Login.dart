@@ -23,6 +23,7 @@ class _LogInState extends State<LogIn> {
         label: 'Close',
         onPressed: () {
           // Some code to undo the change!
+          Text('Something went wrong');
         },
       ),
     );
@@ -212,7 +213,7 @@ class _LogInState extends State<LogIn> {
       'password': passwordController.text
     };
 
-    var res = await CallApi().postData(data, 'login');
+    var res = await CallApi().postData(data, 'signin');
     var body = json.decode(res.body);
     if (body['success']) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
