@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:erg_app/HomePage.dart';
+import 'package:erg_app/eops.dart';
 import 'package:erg_app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,15 +14,17 @@ class _LogInState extends State<LogIn> {
 
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ScaffoldState scaffoldState;
+
   _showMsg(msg) {
     //
+
     final snackBar = SnackBar(
       content: Text(msg),
       action: SnackBarAction(
         label: 'Close',
         onPressed: () {
-          // Some code to undo the change!
           Text('Something went wrong');
         },
       ),
@@ -33,6 +35,7 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -106,7 +109,7 @@ class _LogInState extends State<LogIn> {
                                   Icons.account_circle,
                                   color: Colors.grey,
                                 ),
-                                hintText: "Email",
+                                hintText: "Username",
                                 hintStyle: TextStyle(
                                     color: Color(0xFF9b9b9b),
                                     fontSize: 15,
@@ -179,7 +182,7 @@ class _LogInState extends State<LogIn> {
                           Navigator.push(
                               context,
                               new MaterialPageRoute(
-                                  builder: (context) => Home()));
+                                  builder: (context) => LogIn()));
                         },
                         child: Text(
                           'Forgot Your Password?',
@@ -209,22 +212,27 @@ class _LogInState extends State<LogIn> {
     });
 
     var data = {
-      'email': mailController.text,
+      'userName': mailController.text,
       'password': passwordController.text
     };
 
-    var res = await CallApi().postData(data, 'signin');
+    var res = await CallApi().postData(null,
+        'Login?userName=${mailController.text}&password=${passwordController.text}');
     var body = json.decode(res.body);
-    if (body['success']) {
+    if (body['Success']) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', body['token']);
-      localStorage.setString('user', json.encode(body['user']));
+      // localStorage.setString('token', body['token']);
+      // localStorage.setString('customer', json.encode(body['customer']));
+      localStorage.setString('loginRes', json.encode(body));
+
+      print(localStorage.getString('loginRes'));
+
       Navigator.push(
           context,
           new MaterialPageRoute(
-              builder: (context) => Home())); //this goes to the Home
+              builder: (context) => EopPage()));
     } else {
-      _showMsg(body['message']);
+      _showMsg(body['Message']);
     }
 
     setState(() {

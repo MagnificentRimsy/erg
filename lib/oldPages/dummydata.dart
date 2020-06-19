@@ -302,3 +302,15 @@
   // }
 
 //====================loginheadend
+
+
+
+
+/*Snippets
+
+Snippet to get userdetails data
+==========================
+  title: Text( userData!= null ? 'Welcome, ${userDetail['Email']}' : 'ERGAgent',
+
+
+End of snippets*/

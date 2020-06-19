@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:erg_app/widgets/nav-drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:erg_app/api/api.dart';
-import 'package:erg_app/StockPage.dart';
+import 'package:erg_app/eops.dart';
+import 'package:erg_app/Login.dart';
 
 void main() => runApp(Home());
 
@@ -47,7 +48,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   void _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var userJson = localStorage.getString('user');
+    var userJson = localStorage.getString('loginRes');
     var user = json.decode(userJson);
     setState(() {
       userData = user;
@@ -193,7 +194,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         child: FlatButton(
                           child: Padding(
                             padding: EdgeInsets.only(
-                                top: 8, bottom: 8, left: 10, right: 10),
+                                top: 8, bottom: 8, left: 10, right: 8),
                             child: Text(
                               'Upload data',
                               textDirection: TextDirection.ltr,
@@ -262,13 +263,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ////////////// logout//////////
 
                 Padding(
-                  padding: const EdgeInsets.only(left: 220),
+                  padding: const EdgeInsets.only(left: 180),
                   child: FlatButton(
                     child: Padding(
                       padding: EdgeInsets.only(
                           top: 8, bottom: 8, left: 10, right: 10),
                       child: Text(
-                        'Scan New Card',
+                        'Logout',
                         textDirection: TextDirection.ltr,
                         style: TextStyle(
                           color: Colors.white,
@@ -283,9 +284,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         borderRadius: new BorderRadius.circular(20.0)),
                     onPressed: () {
                       Navigator.push(context,
-                          new MaterialPageRoute(builder: (context) => StockPage()));
+                          new MaterialPageRoute(builder: (context) => EopPage()));
                       // Edit()was here
                     },
+                    
                   ),
                 ),
               ],
@@ -296,28 +298,23 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       // ),
     );
 
-    // return DropdownButton<String>(
-    //   value: dropdownValue,
-    //   icon: Icon(Icons.arrow_drop_down),
-    //   iconSize: 24,
-    //   elevation: 16,
-    //   style: TextStyle(color: Colors.green),
-    //   underline: Container(
-    //     height: 2,
-    //     color: Colors.deepPurpleAccent,
-    //   ),
-    //   onChanged: (String newValue) {
-    //     setState(() {
-    //       dropdownValue = newValue;
-    //     });
-    //   },
-    //   items: <String>['One', 'Two', 'Free', 'Four']
-    //       .map<DropdownMenuItem<String>>((String value) {
-    //     return DropdownMenuItem<String>(
-    //       value: value,
-    //       child: Text(value),
-    //     );
-    //   }).toList(),
-    // );
+   
+  }
+
+   void logout() async{
+      // logout from the server ... 
+      var res = await CallApi().getData('logout');
+      var body = json.decode(res.body);
+      if(body['success']){
+         SharedPreferences localStorage = await SharedPreferences.getInstance();
+         localStorage.remove('customer');
+         localStorage.remove('token');
+         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+        //   Navigator.push(
+        // context,
+        // new MaterialPageRoute(
+        //     builder: (context) => LogIn()));
+      }
+     
   }
 }

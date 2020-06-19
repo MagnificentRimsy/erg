@@ -10,6 +10,25 @@ class NavDrawer extends StatefulWidget {
 }
 
 class _NavDrawerState extends State<NavDrawer> {
+ var user;
+ var userData;
+ var userDetail;
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
+  }
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('loginRes');
+     user = json.decode(userJson);
+     userDetail =user['UserDetail'];
+     print(userDetail);
+    setState(() {
+      userData = user;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -18,7 +37,7 @@ class _NavDrawerState extends State<NavDrawer> {
         children: <Widget>[
           // Container(child: DrawerHeader(child: CircleAvatar()),color: Colors.green,),
           DrawerHeader(
-            child: Image.asset("assets/images/icon.png", height: 10, width: 10, fit: BoxFit.contain,),
+            child: Image.asset("assets/images/icon1.png"),
              
             decoration: BoxDecoration(
                 color: Colors.blue,
@@ -30,47 +49,45 @@ class _NavDrawerState extends State<NavDrawer> {
 
           ListTile(
             // leading: Icon(Icons.input),
-            title: Text('Welcome, Jonah', style: TextStyle(color: Colors.green, fontSize: 23, fontWeight: FontWeight.bold)),
+            title: Text( userData!= null ? 'Welcome, ${user['UserName']}' : 'ERGAgent',
+             style: TextStyle(color: Colors.green, fontSize: 22, fontWeight: FontWeight.bold, )),
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(Icons.cloud_upload),
-            title: Text('Upload Data'),
+            leading: Icon(Icons.account_circle),
+            title: Text('Profile'),
             onTap: () => {Navigator.of(context).pop()},
           ),
          
-          ListTile(
-            leading: Icon(Icons.cloud_download),
-            title: Text('Download Data'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.cloud_download),
+          //   title: Text('Download Data'),
+          //   onTap: () => {Navigator.of(context).pop()},
+          // ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () => {Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => LogIn()))},
-            // onTap: logout,
+            title: Text('Logout'),  
+            onTap: logout,
           ),
         ],
       ),
     );
+  
   }
-
    void logout() async{
       // logout from the server ... 
-      var res = await CallApi().getData('logout');
-      var body = json.decode(res.body);
-      if(body['success']){
+      // var res = await CallApi().getData('logout');
+      // var body = json.decode(res.body);
+      // if(body['success']){}
          SharedPreferences localStorage = await SharedPreferences.getInstance();
-         localStorage.remove('user');
-         localStorage.remove('token');
+         localStorage.remove('loginRes');
+        //  localStorage.remove('token');
           Navigator.push(
         context,
         new MaterialPageRoute(
             builder: (context) => LogIn()));
-      }
+      
      
   }
+
 }

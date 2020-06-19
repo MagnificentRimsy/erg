@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:erg_app/services/webservice.dart';
+import 'package:erg_app/api/webservice.dart';
 // import 'package:erg_app/post_detail.dart';
-import 'package:erg_app/services/weather_model.dart';
+import 'package:erg_app/models/weather_model.dart';
 import 'package:flutter/material.dart';
 
 
@@ -47,8 +47,8 @@ class CaptureInputsPage extends StatelessWidget {
               children: posts
                   .map(
                     (Post post) => ListTile(
-                      title: Text(post.date),
-                      subtitle: Text("${post.date}"),
+                      title: Text(post.fname),
+                      subtitle: Text("${post.lname}"),
                       
                       // onTap: () => Navigator.of(context).push(
                       //   MaterialPageRoute(

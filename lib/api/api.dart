@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class CallApi{
-    final String _url = 'https://api.yikascorner.com/api/';
+    final String _url = 'http://api.ergagro.com:112/';
 
     postData(data, apiUrl) async {
-        var fullUrl = _url + apiUrl + await _getToken(); 
+      //  + await _getToken();
+        var fullUrl = _url + apiUrl; 
         return await http.post(
             fullUrl, 
             body: jsonEncode(data), 

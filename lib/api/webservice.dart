@@ -1,11 +1,12 @@
 import 'dart:convert';
 // import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:erg_app/services/weather_model.dart';
+import 'package:erg_app/models/weather_model.dart';
 
 class HttpService {
-  final String postsURL = "http://api.ergagro.com:112/WeatherForecast";
+  final String postsURL = "https://api.yikascorner.com/api/get-customers";
 
+  // the future is to load the json data that was into a string 
   Future<List<Post>> getPosts() async {
     Response res = await get(postsURL,   headers: _setHeaders());
 
