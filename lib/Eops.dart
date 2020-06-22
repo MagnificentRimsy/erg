@@ -29,7 +29,7 @@ class _MyHomeState extends State<EopPage> {
         allocated_farmers: "230",
         validated_farmers: "195",
         non_validated_farmers: "110",
-        daily_inventory_status: "Not-Completed",
+        daily_inventory_status: "Incompleted",
         distribution_centers: "70"),
     Person(
         name: 'COPMAN',

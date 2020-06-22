@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:erg_app/eops.dart';
@@ -14,28 +15,37 @@ class _LogInState extends State<LogIn> {
 
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ScaffoldState scaffoldState;
 
-  _showMsg(msg) {
-    //
+  // _showMsg(msg) {
+  //   //
 
-    final snackBar = SnackBar(
-      content: Text(msg),
-      action: SnackBarAction(
-        label: 'Close',
-        onPressed: () {
-          Text('Something went wrong');
-        },
-      ),
-    );
-    Scaffold.of(context).showSnackBar(snackBar);
+  //   final snackBar = SnackBar(
+  //     content: Text(msg),
+  //     action: SnackBarAction(
+  //       label: 'Close',
+  //       onPressed: () {
+  //         Text('Something went wrong');
+  //       },
+  //     ),
+  //   );
+  //   Scaffold.of(context).showSnackBar(snackBar);
+  // }
+
+
+  _showMsg() {
+    final snackBar =
+        SnackBar(
+          content: Text('Invalid Username or Password', style: (TextStyle(fontSize: 18)),),
+          backgroundColor: Colors.amber[900],
+        );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldKey,
+       key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -128,6 +138,7 @@ class _LogInState extends State<LogIn> {
                               controller: passwordController,
                               keyboardType: TextInputType.text,
                               obscureText: true,
+                              
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.vpn_key,
@@ -168,6 +179,7 @@ class _LogInState extends State<LogIn> {
                                         new BorderRadius.circular(20.0)),
                                 onPressed: _isLoading ? null : _login,
                               ),
+                              
                             ),
                           ],
                         ),
@@ -232,11 +244,30 @@ class _LogInState extends State<LogIn> {
           new MaterialPageRoute(
               builder: (context) => EopPage()));
     } else {
-      _showMsg(body['Message']);
+      _showMsg();
     }
 
     setState(() {
       _isLoading = false;
     });
+  }
+}
+
+
+class EmailValidator {
+  static String validate(String value) {
+    if (value.isEmpty) {
+      return "Username can't be empty";
+    }
+    return null;
+  }
+}
+ 
+class PasswordValidator {
+  static String validate(String value) {
+    if (value.isEmpty) {
+      return "Password can't be empty";
+    }
+    return null;
   }
 }

@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:erg_app/CaptureInputsPage.dart';
-// import 'package:erg_app/ScanPage.dart';
 import 'package:erg_app/ProfilePage.dart';
 import 'dart:convert';
-import 'package:erg_app/api/webservice.dart';
 import 'package:erg_app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 void main() => runApp(MaterialApp(
       home: StockPage(),
-    ));
+));
 
 class StockPage extends StatelessWidget {
   // This widget is the root of your application.
@@ -52,7 +49,6 @@ class _StockInventoryState extends State<StockInventory> {
     selectedProducts = [];
     products = Products.getProducts();
     super.initState();
-
     // initialization of the http request
   }
 
@@ -66,7 +62,6 @@ class _StockInventoryState extends State<StockInventory> {
       }
     }
   }
-
 
 
   @override
@@ -102,7 +97,7 @@ class _StockInventoryState extends State<StockInventory> {
                         fontSize: 14),
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CaptureInputsPage()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
                     // showSimpleCustomDialog(context);
                   },
                   shape: RoundedRectangleBorder(
@@ -230,14 +225,14 @@ class _StockInventoryState extends State<StockInventory> {
 
                     ////////////   new account///////////////
       
-
+            Divider(),
 
 
             Container(
               padding: EdgeInsets.only(top: 30, bottom: 30),
               child: DataTable(
-                sortAscending: sort,
-                sortColumnIndex: 0,
+                sortColumnIndex: 1,
+                sortAscending: true,
                 columns: [
                   DataColumn(
                     label: Text("S/No", style: TextStyle(fontSize: 16)),
@@ -285,10 +280,10 @@ class _StockInventoryState extends State<StockInventory> {
                               },
                             ),
                             DataCell(
-                              Text(product.measuringunit),
-                              onTap: () {
-                                print('Selected ${product.measuringunit}');
-                              },
+                              Text('Update'),
+                              onTap: () {},
+                              showEditIcon: true,
+
                             ),
                             
                           ]),

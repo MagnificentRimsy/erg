@@ -3,23 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:erg_app/models/album_model.dart';
 
 // void main() {
-
 //   runApp(ProfilePage());
 // }
   
 
-class ProfilePage extends StatelessWidget {
+class AlbumDetailsPage extends StatelessWidget {
   
-  final String result;
-  
-  ProfilePage({this.result});
-
+ 
+  final Album album;
+  AlbumDetailsPage({@required this.album});
   
   
   @override
   Widget build(BuildContext context) {
-  
-
     // TODO: implement build
     return MaterialApp(
        debugShowCheckedModeBanner: false,
@@ -27,7 +23,7 @@ class ProfilePage extends StatelessWidget {
       home: Scaffold(
          appBar: AppBar(
 
-          title: new Center(child: new Text('Farmers Data', textAlign: TextAlign.left)),
+          title: new Center(child: new Text('Album Details:', textAlign: TextAlign.left)),
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.green, 
           leading: new IconButton(
@@ -49,7 +45,7 @@ class ProfilePage extends StatelessWidget {
                   
                 ),
                 Text(
-                  'Yusuf Danladi',
+                  album.title,
                   style: TextStyle(
                     fontFamily: 'SourceSansPro',
                     fontSize: 25,
@@ -76,7 +72,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Farmer Details',
+                  'Album Details',
                   textAlign: TextAlign.center,
 
                 
@@ -88,7 +84,7 @@ class ProfilePage extends StatelessWidget {
                           EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
                       child: ListTile(
                         leading: Text(
-                            'BVN:',
+                            'ID:',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'SourceSansPro',
@@ -96,8 +92,8 @@ class ProfilePage extends StatelessWidget {
                               letterSpacing: 2.5,
                           ),
                         ),
-                        title: Text(
-                          result,
+                        title: Text("${album.userId}",
+                          // result,
                           style:
                               TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
                         ), 
@@ -110,7 +106,7 @@ class ProfilePage extends StatelessWidget {
                           EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
                       child: ListTile(
                         leading: Text(
-                            'Phone:',
+                            'Title:',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'SourceSansPro',
@@ -119,7 +115,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ),
                         title: Text(
-                          '+234 801 000 4504',
+                          album.title,
                           style:
                               TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
                         ), 
@@ -133,7 +129,7 @@ class ProfilePage extends StatelessWidget {
                           EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
                       child: ListTile(
                         leading: Text(
-                            'Appicant ID:',
+                            'Body:',
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'SourceSansPro',
@@ -142,73 +138,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ),
                         title: Text(
-                          'ERG-108691911',
-                          style:
-                              TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
-                        ), 
-                      ), 
-                    ),
-
-                    Card(
-                      color: Colors.white,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                      child: ListTile(
-                        leading: Text(
-                            'State/LGA:',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'SourceSansPro',
-                              color: Colors.green[700],
-                              letterSpacing: 2.5,
-                          ),
-                        ),
-                        title: Text(
-                          'Taraba/Ussa',
-                          style:
-                              TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
-                        ), 
-                      ), 
-                    ),
-
-                    Card(
-                      color: Colors.white,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                      child: ListTile(
-                        leading: Text(
-                            'Farm Size:',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'SourceSansPro',
-                              color: Colors.green[700],
-                              letterSpacing: 2.5,
-                          ),
-                        ),
-                        title: Text(
-                          '5000 meter sq',
-                          style:
-                              TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
-                        ), 
-                      ), 
-                    ),
-
-                    Card(
-                      color: Colors.white,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                      child: ListTile(
-                        leading: Text(
-                            'Geo Coord.:',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'SourceSansPro',
-                              color: Colors.green[700],
-                              letterSpacing: 2.5,
-                          ),
-                        ),
-                        title: Text(
-                          '012350007, 038245543',
+                          album.body,
                           style:
                               TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
                         ), 
@@ -221,7 +151,7 @@ class ProfilePage extends StatelessWidget {
                         child: RaisedButton(
                           padding: EdgeInsets.fromLTRB(80, 10, 80, 10),
                           color: Colors.green,
-                          child: Text("Complete", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
+                          child: Text("Close", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(builder: (context) =>StartScanPage()));
                           },

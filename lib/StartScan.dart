@@ -1,8 +1,12 @@
-import 'package:erg_app/ScanPage.dart';
+import 'dart:async';
+import 'package:erg_app/ProfilePage.dart';
 import 'package:erg_app/eops.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:erg_app/Animations/FadeAnimation.dart';
+import 'package:flutter/services.dart';
+
 
 
 void main() {
@@ -14,7 +18,50 @@ void main() {
   );
 }
 
-class StartScanPage extends StatelessWidget {
+class StartScanPage extends StatefulWidget {
+  @override
+  StartScanPageState createState() {
+      return new StartScanPageState();
+  }
+}
+
+  class StartScanPageState extends State<StartScanPage>  {
+
+  String result = "Bio Data:";
+
+  Future _scanQR() async {
+    try {
+      String qrResult = await BarcodeScanner.scan();
+      
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(result : qrResult),
+        ),
+      );
+      // setState(() {
+      //   result = qrResult; 
+      // });
+    } on PlatformException catch (ex) {
+      if (ex.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          result = "Camera permission was denied";
+        });
+      } else {
+        setState(() {
+          result = "Unknown Error $ex";
+        });
+      }
+    } on FormatException {
+      setState(() {
+        result = "You pressed the back button before scanning anything";
+      });
+    } catch (ex) {
+      setState(() {
+        result = "Unknown Error $ex";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +94,7 @@ class StartScanPage extends StatelessWidget {
                 height: MediaQuery.of(context).size.height / 3,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/illustration.png')
+                    image: AssetImage('assets/images/illustration1.png')
                   )
                 ),
               )),
@@ -57,9 +104,8 @@ class StartScanPage extends StatelessWidget {
                     color: Colors.green,
                     minWidth: double.infinity,
                     height: 60,
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ScanPage()));
-                    },
+                    onPressed: _scanQR,
+                   
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
                         color: Colors.green
