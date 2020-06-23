@@ -104,6 +104,7 @@ class _LogInState extends State<LogIn> {
                           borderRadius: BorderRadius.circular(15)),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
+                        // child: form(key: _formKey),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -136,7 +137,7 @@ class _LogInState extends State<LogIn> {
                               style: TextStyle(color: Color(0xFF000000)),
                               cursorColor: Color(0xFF9b9b9b),
                               controller: passwordController,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.number,
                               obscureText: true,
                               
                               decoration: InputDecoration(
@@ -224,8 +225,8 @@ class _LogInState extends State<LogIn> {
     });
 
     var data = {
-      'userName': mailController.text,
-      'password': passwordController.text
+      'userName': mailController.text.trim(),
+      'password': passwordController.text.trim()
     };
 
     var res = await CallApi().postData(null,
