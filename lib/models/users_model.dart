@@ -1,34 +1,43 @@
 // To parse this JSON data, do
 //
-//     final users = usersFromJson(jsonString);
+//     final userinfo = userinfoFromJson(jsonString);
 
 import 'dart:convert';
 
-Users usersFromJson(String str) => Users.fromJson(json.decode(str));
+Userinfo userinfoFromJson(String str) => Userinfo.fromJson(json.decode(str));
 
-String usersToJson(Users data) => json.encode(data.toJson());
+String userinfoToJson(Userinfo data) => json.encode(data.toJson());
 
-class Users {
-    Users({
+class Userinfo {
+    Userinfo({
         this.statusCode,
         this.message,
         this.success,
         this.userName,
+        this.roles,
         this.userDetail,
+        this.anchors,
+        this.userId,
     });
 
     int statusCode;
     String message;
     bool success;
     String userName;
+    List<Role> roles;
     UserDetail userDetail;
+    List<Anchor> anchors;
+    String userId;
 
-    factory Users.fromJson(Map<String, dynamic> json) => Users(
+    factory Userinfo.fromJson(Map<String, dynamic> json) => Userinfo(
         statusCode: json["StatusCode"],
         message: json["Message"],
         success: json["Success"],
         userName: json["UserName"],
+        roles: List<Role>.from(json["Roles"].map((x) => Role.fromJson(x))),
         userDetail: UserDetail.fromJson(json["UserDetail"]),
+        anchors: List<Anchor>.from(json["Anchors"].map((x) => Anchor.fromJson(x))),
+        userId: json["UserId"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -36,7 +45,94 @@ class Users {
         "Message": message,
         "Success": success,
         "UserName": userName,
+        "Roles": List<dynamic>.from(roles.map((x) => x.toJson())),
         "UserDetail": userDetail.toJson(),
+        "Anchors": List<dynamic>.from(anchors.map((x) => x.toJson())),
+        "UserId": userId,
+    };
+}
+
+class Anchor {
+    Anchor({
+        this.oid,
+        this.name,
+        this.acronym,
+        this.distributionCentres,
+    });
+
+    int oid;
+    String name;
+    String acronym;
+    List<DistributionCentre> distributionCentres;
+
+    factory Anchor.fromJson(Map<String, dynamic> json) => Anchor(
+        oid: json["Oid"],
+        name: json["Name"],
+        acronym: json["Acronym"],
+        distributionCentres: List<DistributionCentre>.from(json["DistributionCentres"].map((x) => DistributionCentre.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "Oid": oid,
+        "Name": name,
+        "Acronym": acronym,
+        "DistributionCentres": List<dynamic>.from(distributionCentres.map((x) => x.toJson())),
+    };
+}
+
+class DistributionCentre {
+    DistributionCentre({
+        this.oid,
+        this.name,
+        this.address,
+    });
+
+    int oid;
+    String name;
+    String address;
+
+    factory DistributionCentre.fromJson(Map<String, dynamic> json) => DistributionCentre(
+        oid: json["Oid"],
+        name: json["Name"],
+        address: json["Address"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "Oid": oid,
+        "Name": name,
+        "Address": address,
+    };
+}
+
+class Role {
+    Role({
+        this.name,
+        this.isAdministrative,
+        this.canEditModel,
+        this.permissionPolicy,
+        this.oid,
+    });
+
+    String name;
+    bool isAdministrative;
+    bool canEditModel;
+    int permissionPolicy;
+    String oid;
+
+    factory Role.fromJson(Map<String, dynamic> json) => Role(
+        name: json["Name"],
+        isAdministrative: json["IsAdministrative"],
+        canEditModel: json["CanEditModel"],
+        permissionPolicy: json["PermissionPolicy"],
+        oid: json["Oid"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "Name": name,
+        "IsAdministrative": isAdministrative,
+        "CanEditModel": canEditModel,
+        "PermissionPolicy": permissionPolicy,
+        "Oid": oid,
     };
 }
 
@@ -50,16 +146,20 @@ class UserDetail {
         this.userType,
         this.designation,
         this.organization,
+        this.state,
+        this.localGovernment,
     });
 
     String title;
     String firstName;
-    String middleName;
+    dynamic middleName;
     String lastName;
     String email;
     String userType;
     String designation;
     String organization;
+    String state;
+    String localGovernment;
 
     factory UserDetail.fromJson(Map<String, dynamic> json) => UserDetail(
         title: json["Title"],
@@ -70,6 +170,8 @@ class UserDetail {
         userType: json["UserType"],
         designation: json["Designation"],
         organization: json["Organization"],
+        state: json["State"],
+        localGovernment: json["LocalGovernment"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -81,5 +183,7 @@ class UserDetail {
         "UserType": userType,
         "Designation": designation,
         "Organization": organization,
+        "State": state,
+        "LocalGovernment": localGovernment,
     };
 }

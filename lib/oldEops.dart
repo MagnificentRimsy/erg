@@ -1,10 +1,8 @@
 import 'package:erg_app/StockPage.dart';
-import 'package:erg_app/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:erg_app/Widgets/nav-drawer.dart';
+import 'package:erg_app/models/eopmodel.dart';
 import 'package:erg_app/StartScan.dart';
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MaterialApp(
       home: EopPage(),
@@ -16,44 +14,39 @@ class EopPage extends StatefulWidget {
 }
 
 class _MyHomeState extends State<EopPage> {
-  var user;
-  var userData;
-  var userDetail;
-  List<Anchor> anchorData;
+  List<Person> persons = [
+    Person(
+        name: 'RIFAN',
+        profileImg: 'assets/images/user.png',
+        allocated_farmers: "300",
+        validated_farmers: "345",
+        non_validated_farmers: "120",
+        daily_inventory_status: "Completed",
+        distribution_centers: "100"),
+    Person(
+        name: 'MAAN',
+        profileImg: 'assets/images/user.png',
+        allocated_farmers: "230",
+        validated_farmers: "195",
+        non_validated_farmers: "110",
+        daily_inventory_status: "Incompleted",
+        distribution_centers: "70"),
+    Person(
+        name: 'COPMAN',
+        profileImg: 'assets/images/user.png',
+        allocated_farmers: "560",
+        validated_farmers: "45",
+        non_validated_farmers: "780",
+        daily_inventory_status: "Completed",
+        distribution_centers: "40"),
+  ];
 
-  @override
-  void initState() {
-    _getUserInfo();
-    super.initState();
-  }
-
-  void _getUserInfo() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var userJson = localStorage.getString('loginRes');
-    user = json.decode(userJson);
-    // userDetail =user['UserDetail'];
-    anchorData = user['Anchors'];
-    print(anchorData);
-    //  print(userDetail);
-    setState(() {
-      userData = user;
-      
-    });
-  }
- 
-
-  
-  Widget personDetailCard() {
-
-
+  Widget personDetailCard(Person) {
     return Container(
-            
-    
       padding: const EdgeInsets.all(10.0),
 
       ////////////// 1st card///////////
-    
-            
+
       child: Card(
         elevation: 4.0,
         color: Colors.grey[100],
@@ -76,12 +69,13 @@ class _MyHomeState extends State<EopPage> {
                             shape: BoxShape.circle,
                             image: new DecorationImage(
                                 fit: BoxFit.cover,
-                                image: AssetImage('assets/images/user.png')))),
+                                image: AssetImage(Person.profileImg)))),
                   ),
                   SizedBox(
                     width: 20,
                   ),
-                  Text('',
+                  Text(
+                    Person.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFF9b9b9b),
@@ -110,7 +104,8 @@ class _MyHomeState extends State<EopPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 70, top: 12),
-                    child: Text('',
+                    child: Text(
+                      Person.allocated_farmers,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.grey[700],
@@ -139,7 +134,8 @@ class _MyHomeState extends State<EopPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 70, top: 12),
-                    child: Text('',
+                    child: Text(
+                      Person.validated_farmers,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.grey[700],
@@ -168,7 +164,8 @@ class _MyHomeState extends State<EopPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 40, top: 12),
-                    child: Text('',
+                    child: Text(
+                      Person.non_validated_farmers,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.grey[700],
@@ -197,7 +194,8 @@ class _MyHomeState extends State<EopPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 60, top: 12),
-                    child: Text('',
+                    child: Text(
+                      Person.distribution_centers,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.grey[700],
@@ -226,10 +224,11 @@ class _MyHomeState extends State<EopPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 50, top: 12),
-                    child: Text('Completed',
+                    child: Text(
+                      Person.daily_inventory_status,
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        color: 'Completed' == 'Completed'
+                        color: Person.daily_inventory_status == 'Completed'
                             ? Colors.green
                             : Colors.red,
                         fontSize: 14.0,
@@ -249,7 +248,7 @@ class _MyHomeState extends State<EopPage> {
 
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: 'Completed' == 'Completed'
+                    child: Person.daily_inventory_status == 'Completed'
                         ? FlatButton(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -340,10 +339,8 @@ class _MyHomeState extends State<EopPage> {
               ],
             ),
             Column(
-                children: anchorData.map((p) {
-                  print('Anchor List');
-                  print(p);
-              return personDetailCard();
+                children: persons.map((p) {
+              return personDetailCard(p);
             }).toList())
           ],
         ),

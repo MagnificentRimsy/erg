@@ -13,6 +13,7 @@ class _NavDrawerState extends State<NavDrawer> {
  var user;
  var userData;
  var userDetail;
+ var anchors; 
   @override
   void initState() {
     _getUserInfo();
@@ -23,8 +24,10 @@ class _NavDrawerState extends State<NavDrawer> {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('loginRes');
      user = json.decode(userJson);
-     userDetail =user['UserDetail'];
-     print(userDetail);
+    // userDetail =user['UserDetail'];
+     anchors = user['Anchors'];
+     print(anchors);
+    //  print(userDetail);
     setState(() {
       userData = user;
     });
@@ -49,7 +52,8 @@ class _NavDrawerState extends State<NavDrawer> {
 
           ListTile(
             // leading: Icon(Icons.input),
-            title: Text( userData!= null ? 'Welcome, ${user['UserName']}' : 'ERGAgent',
+            // title: Text( userData!= null ? 'Welcome, ${user['UserName']}' : 'ERGAgent',
+            title: Text( userData!= null ? 'Welcome, ${userDetail['FirstName']}' : 'ERGAgent',
              style: TextStyle(color: Colors.green, fontSize: 22, fontWeight: FontWeight.bold, )),
             onTap: () => {},
           ),
