@@ -16,7 +16,6 @@ class StockPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Inventory Data',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
@@ -67,10 +66,17 @@ class _StockInventoryState extends State<StockInventory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: new Center(
-            child: new Text('Daily Stock Taking', textAlign: TextAlign.center)),
-        automaticallyImplyLeading: false,
+      // appBar: AppBar(
+      //   title: new Center(
+      //       child: new Text('Daily Stock Taking')
+      //   ),
+      //   iconTheme: IconThemeData(color: Colors.white),
+      //   backgroundColor: Colors.green,
+      // ),
+
+       appBar: AppBar(
+         automaticallyImplyLeading: true,
+        title: Text('Anchors Details'),
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.green,
       ),
@@ -80,33 +86,7 @@ class _StockInventoryState extends State<StockInventory> {
         child: ListView(
           
           children: <Widget>[
-            Container(
-
-                
-              margin: const EdgeInsets.only(right: 20, top: 20),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: RaisedButton(
-                  padding: EdgeInsets.fromLTRB(14, 10, 14, 10),
-                  color: Colors.green,
-                  child: Text(
-                    "Test APi",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
-                    // showSimpleCustomDialog(context);
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-              ),
-            ),
-
+            
             ////////// Stock Taking Form //////////////
             SizedBox(height: 30),
                 Card(

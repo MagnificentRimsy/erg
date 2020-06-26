@@ -1,13 +1,11 @@
 import 'dart:async';
+import 'package:erg_app/Anchors.dart';
 import 'package:erg_app/ProfilePage.dart';
-import 'package:erg_app/eops.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:erg_app/Animations/FadeAnimation.dart';
 import 'package:flutter/services.dart';
-
-
 
 void main() {
   runApp(
@@ -134,7 +132,7 @@ class StartScanPage extends StatefulWidget {
                       minWidth: double.infinity,
                       height: 60,
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EopPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AnchorsPage()));
                       },
                       color: Colors.white,
                       elevation: 0,

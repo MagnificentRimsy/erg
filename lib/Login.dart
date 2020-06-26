@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:erg_app/eops.dart';
+import 'package:erg_app/Anchors.dart';
 import 'package:erg_app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -243,7 +243,7 @@ class _LogInState extends State<LogIn> {
       Navigator.push(
           context,
           new MaterialPageRoute(
-              builder: (context) => EopPage()));
+              builder: (context) => AnchorsPage()));
     } else {
       _showMsg();
     }

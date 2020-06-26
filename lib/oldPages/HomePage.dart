@@ -1,9 +1,9 @@
 import 'dart:convert';
+import 'package:erg_app/Anchors.dart';
 import 'package:flutter/material.dart';
 import 'package:erg_app/widgets/nav-drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:erg_app/api/api.dart';
-import 'package:erg_app/eops.dart';
 import 'package:erg_app/Login.dart';
 
 void main() => runApp(Home());
@@ -284,7 +284,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         borderRadius: new BorderRadius.circular(20.0)),
                     onPressed: () {
                       Navigator.push(context,
-                          new MaterialPageRoute(builder: (context) => EopPage()));
+                          new MaterialPageRoute(builder: (context) => AnchorsPage()));
                       // Edit()was here
                     },
                     
