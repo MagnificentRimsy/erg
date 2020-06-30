@@ -1,348 +1,524 @@
 import 'dart:async';
+import 'package:erg_app/Anchors.dart';
+import 'package:erg_app/Details.dart';
+import 'package:erg_app/StartScan.dart';
+import 'package:erg_app/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:erg_app/ProfilePage.dart';
 import 'dart:convert';
 import 'package:erg_app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-void main() => runApp(MaterialApp(
-      home: StockPage(),
-));
-
-class StockPage extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: StockInventory(),
-    );
-  }
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: StockInventoryPage(),
+  ));
 }
 
-class StockInventory extends StatefulWidget {
-  StockInventory({Key key}) : super(key: key); //Find out meaning
+class StockInventoryPage extends StatefulWidget {
+  StockInventoryPage({Key key}) : super(key: key); //Find out meaning
 
   @override
-  _StockInventoryState createState() => _StockInventoryState();
+  _StockInventoryPageState createState() => _StockInventoryPageState();
 }
 
-class _StockInventoryState extends State<StockInventory> {
+class _StockInventoryPageState extends State<StockInventoryPage> {
   List<Products> products;
   List<Products> selectedProducts;
+  GlobalKey<ScaffoldState> _scaffoldKey;
 
-  // GET WEATHER
-
-  bool sort;
   bool _isLoading = false;
-  String dropdownValue = 'One';
+  bool _isEnabled = false;
+  bool _isUpdate = false;
 
+  String _name;
+  String _currentQuantity;
+  String _quantity;
+
+  _showSnackBar(context, message) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
 
   @override
   void initState() {
-    sort = false;
     selectedProducts = [];
     products = Products.getProducts();
+    _scaffoldKey = GlobalKey(); // key to get the context to show a SnackBar
     super.initState();
-    // initialization of the http request
   }
 
-  
-  onSortColum(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      if (ascending) {
-        products.sort((a, b) => a.name.compareTo(b.name));
-      } else {
-        products.sort((a, b) => b.name.compareTo(a.name));
-      }
-    }
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // Beginning of form widgets
+
+  Widget _buildItemName() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Item Name'),
+      enabled: _isEnabled,
+      onSaved: (String value) {
+        _name = value;
+      },
+    );
   }
 
+  Widget _buildCurrentQuantity() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Item Current Quantity'),
+      enabled: _isEnabled,
+      keyboardType: TextInputType.number,
+      onSaved: (String value) {
+        _currentQuantity = value;
+      },
+    );
+  }
+
+  Widget _buildQuantity() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Quantity'),
+      keyboardType: TextInputType.number,
+      validator: (String value) {
+        int quantity = int.tryParse(value);
+
+        if (quantity == null || quantity <= 0) {
+          return 'Quantity must be greater than 0';
+        }
+
+        return null;
+      },
+      onSaved: (String value) {
+        _quantity = value;
+      },
+    );
+  }
+
+//End of form widgets
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: new Center(
-      //       child: new Text('Daily Stock Taking')
-      //   ),
-      //   iconTheme: IconThemeData(color: Colors.white),
-      //   backgroundColor: Colors.green,
-      // ),
-
-       appBar: AppBar(
-         automaticallyImplyLeading: true,
-        title: Text('Anchors Details'),
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: Text('Take Inventory'),
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.green,
       ),
-      
       body: Container(
-
+        padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
         child: ListView(
-          
           children: <Widget>[
-            
-            ////////// Stock Taking Form //////////////
-            SizedBox(height: 30),
-                Card(
-                  elevation: 4.0,
-                  color: Colors.white,
-                  margin: EdgeInsets.only(left: 20, right: 20),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        /////////////  Items//////////////
-                        ///
-                     Padding(
-                      padding:
-                          EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              'select Item:',
+            Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                SizedBox(width: 15),
+                Icon(Icons.timelapse, size: 30, color: Colors.green[400]),
+                SizedBox(width: 15),
+                Text(
+                  'Summary of Inventory',
+                  style: TextStyle(color: Colors.green[400], fontSize: 20),
+                ),
+              ],
+            ),
 
+            ////////// Stock Summary//////////////
+
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              ////////////// 1st card///////////
+
+              child: Card(
+                elevation: 4.0,
+                color: Colors.grey[100],
+                margin:
+                    EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Container(
+                  padding: EdgeInsets.only(left: 15, top: 20, bottom: 10),
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(width: 10),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Fertilizers:',
+                              textAlign: TextAlign.left,
                               style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
                           ),
-                          
-                          
-                          Container(
-                            child:DropdownButton<String>(
-                            
-                            style: TextStyle(color: Colors.grey),
-                            value: dropdownValue,
-                            icon: Icon(Icons.arrow_drop_down),
-                            iconSize: 24,
-                            elevation: 16,
-                            underline: Container(
-                              // height: 1,
-                              color: Colors.grey,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 105, top: 12),
+                            child: Text(
+                              '2435',
+                              // anchors[i]['Oid'].toString(),
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                dropdownValue = newValue;
-                              });
-                            },
-                            items: <String>['One', 'Sprayer', 'Harvesting', 'Transportation']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                       
                           ),
                         ],
-
-                )),
-
-               /////////////// Quantity////////////////////
-                        TextField(
-                          style: TextStyle(color: Color(0xFF000000)),
-                          // controller: mailController,
-                          cursorColor: Color(0xFF9b9b9b),
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.category,
-                              color: Colors.grey,
-                            ),
-                            hintText: "Enter Item Quantity",
-                            hintStyle: TextStyle(
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Spray:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
                                 color: Color(0xFF9b9b9b),
-                                fontSize: 15,
-                                fontWeight: FontWeight.normal),
-                                focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.green)),
-                          ),
-                        ),
-                        /////////////  LogIn Botton///////////////////
-                        Padding(
-                          padding: const EdgeInsets.only(left:150.0),
-                          child: FlatButton(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 8, bottom: 8, left: 5, right: 5),
-                              child: Text(
-                                _isLoading ? 'Processing...' : 'Add Item',
-                                textDirection: TextDirection.ltr,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15.0,
-                                  decoration: TextDecoration.none,
-                                  fontWeight: FontWeight.normal,
-                                ),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 130, top: 12),
+                            child: Text(
+                              '243',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Harvest Equipments',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 42, top: 12),
+                            child: Text(
+                              '423',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Urea Fertilizer:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 78, top: 12),
+                            child: Text(
+                              '546',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Planting Equipment:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 45, top: 12),
+                            child: Text(
+                              '345',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 20,
+                      ),
+                      // button was here
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            ////////// End of Stock Summary//////////////
+
+            Divider(),
+            SizedBox(height: 20),
+            Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                SizedBox(width: 35),
+                Icon(Icons.category, size: 30, color: Colors.green[400]),
+                SizedBox(width: 15),
+                Text(
+                  'Take Inventory',
+                  style: TextStyle(color: Colors.green[400], fontSize: 20),
+                ),
+              ],
+            ),
+
+            // Form widget initialization
+            Container(
+              margin: EdgeInsets.all(24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    if (_isUpdate == true) ...[
+                      _buildItemName(),
+                      _buildCurrentQuantity(),
+                      _buildQuantity(),
+                      SizedBox(height: 30),
+                      Container(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: RaisedButton(
+                            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                             color: Colors.green,
-                            disabledColor: Colors.grey,
-                            shape: new RoundedRectangleBorder(
-                                borderRadius:
-                                    new BorderRadius.circular(20.0)),
-                            onPressed: _isLoading ? null : _addItem,
+                            child: Text(
+                              "Update",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
+                            ),
+                            onPressed: () {
+                              if (!_formKey.currentState.validate()) {
+                                return;
+                              }
+
+                              _formKey.currentState.save();
+
+                              print(_name);
+                              print(_currentQuantity);
+                              print(_quantity);
+
+                              //Send to API
+                              setState(() {
+                                _isUpdate = false;
+                              });
+
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
                           ),
                         ),
-                      ],
+                      ),
+                    ],
+                    Divider(),
+                    SizedBox(height: 20),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columns: [
+                            DataColumn(
+                              label: Text('ID'),
+                            ),
+                            DataColumn(
+                              label: Text('Items'),
+                            ),
+                            DataColumn(
+                              label: Text('Quantities'),
+                            ),
+                            // Lets add one more column to show a delete button
+                            DataColumn(
+                              label: Text('Update'),
+                            )
+                          ],
+                          rows: products
+                              .map(
+                                (product) => DataRow(
+                                    selected:
+                                        selectedProducts.contains(product),
+                                    cells: [
+                                      DataCell(
+                                        Text(product.count),
+                                        onTap: () {
+                                          print('Selected ${product.count}');
+                                        },
+                                      ),
+                                      DataCell(
+                                        Text(product.name),
+                                        onTap: () {
+                                          print('Selected ${product.name}');
+                                        },
+                                      ),
+                                      DataCell(
+                                        Text(product.itemqty),
+                                        onTap: () {
+                                          print('Selected ${product.itemqty}');
+                                        },
+                                      ),
+                                      DataCell(
+                                        Text('Edit'),
+                                        onTap: () {
+                                          setState(() {
+                                            _isUpdate = true;
+                                          });
+                                        },
+                                        showEditIcon: true,
+                                      ),
+                                    ]),
+                              )
+                              .toList(),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                    SizedBox(height: 20),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          RaisedButton(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            color: Colors.green,
+                            child: Text(
+                              "Submit and Validate",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
+                            ),
+                            onPressed: () {
+                              if (!_formKey.currentState.validate()) {
+                                return;
+                              }
 
-                    ////////////   new account///////////////
-      
+                              _formKey.currentState.save();
+
+                              print(_name);
+                              print(_currentQuantity);
+                              print(_quantity);
+
+                               Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => StartScanPage() ));
+
+                              //Send to API
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(300),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          RaisedButton(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            color: Colors.orangeAccent,
+                            child: Text(
+                              "Submit and Close",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
+                            ),
+                            onPressed: () {
+                              // if (!_formKey.currentState.validate()) {
+                              //   return;
+                              // }
+
+                              // _formKey.currentState.save();
+
+                              // print(_name);
+                              // print(_category);
+                              // print(_currentQuantity);
+                              // print(_quantity);
+
+                              //Send to API
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => AnchorsPage() ));
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                  ],
+                ),
+              ),
+            ),
+            // End of form widget Initialization
+
             Divider(),
-
-
-            Container(
-              padding: EdgeInsets.only(top: 30, bottom: 30),
-              child: DataTable(
-                sortColumnIndex: 1,
-                sortAscending: true,
-                columns: [
-                  DataColumn(
-                    label: Text("S/No", style: TextStyle(fontSize: 16)),
-                    numeric: false,
-                  ),
-                  DataColumn(
-                      label: Text("Item", style: TextStyle(fontSize: 16)),
-                      numeric: false,
-                      onSort: (columnIndex, ascending) {
-                        setState(() {
-                          sort = !sort;
-                        });
-                        onSortColum(columnIndex, ascending);
-                      }),
-                      DataColumn(
-                        label: Text("QtyInStock", style: TextStyle(fontSize: 16)),
-                        numeric: false,
-                      ),
-                      DataColumn(
-                        label: Text("Unit", style: TextStyle(fontSize: 16)),
-                        numeric: false,
-                      ),
-                ],
-                rows: products
-                    .map(
-                      (product) => DataRow(
-                          selected: selectedProducts.contains(product),
-                          cells: [
-                            DataCell(
-                              Text(product.count),
-                              onTap: () {
-                                print('Selected ${product.count}');
-                              },
-                            ),
-                            DataCell(
-                              Text(product.name),
-                              onTap: () {
-                                print('Selected ${product.name}');
-                              },
-                            ),
-                            DataCell(
-                              Text(product.itemqty),
-                              onTap: () {
-                                print('Selected ${product.itemqty}');
-                              },
-                            ),
-                            DataCell(
-                              Text('Update'),
-                              onTap: () {},
-                              showEditIcon: true,
-
-                            ),
-                            
-                          ]),
-                    )
-                    .toList(),
-              ),
-            ),
-            Container(
-              
-              margin: const EdgeInsets.only( top: 10, bottom: 20),
-
-              child: Center(
-                
-                child: RaisedButton(
-                  padding: EdgeInsets.fromLTRB(80, 10, 80, 10),
-                  color: Colors.green,
-                  child: Text(
-                    "Post Inventory",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ProfilePage()));
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => CaptureInputsPage()));
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-                  
-              ),
-            ),
-            
           ],
         ),
       ),
     );
   }
-
-
-    void _addItem() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    var data = {
-      // 'email': mailController.text,
-      // 'password': passwordController.text
-    };
-
-    var res = await CallApi().postData(data, 'login');
-    var body = json.decode(res.body);
-    if (body['success']) {
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', body['token']);
-      localStorage.setString('user', json.encode(body['user']));
-      // Navigator.push(
-      //     context,
-      //     new MaterialPageRoute(
-      //         builder: (context) => LogIn())); //this goes to the Home
-    } else {
-      // _showMsg(body['message']);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-
-
-
-
 }
 
-// Dropdown menu data class
+//Product Model
 class Products {
   String count;
   String name;
@@ -373,6 +549,3 @@ class Products {
     ];
   }
 }
-
-
-

@@ -88,7 +88,7 @@ class _MyHomeState extends State<AnchorsPage> {
     setState(() {
       anchors = user['Anchors'];
     });
-    print(anchors);
+    // print(anchors);
     setState(() {
       userData = anchors;
     });
@@ -96,7 +96,10 @@ class _MyHomeState extends State<AnchorsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+      return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: new Scaffold(      
       drawer: NavDrawer(),
       appBar: AppBar(
         title: Text('Dashboard'),
@@ -108,15 +111,13 @@ class _MyHomeState extends State<AnchorsPage> {
         child: ListView(
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Icon(Icons.card_membership,
-                    size: 30, color: Colors.orange[400]
-                ),
-            
+                SizedBox(width: 15),
+                Icon(Icons.card_membership, size: 30, color: Colors.green[400]),
+                SizedBox(width: 15),
                 Text(
                   'Assigned Anchors',
-                  style: TextStyle(color: Colors.orange[400], fontSize: 20),
+                  style: TextStyle(color: Colors.green[400], fontSize: 20),
                 ),
               ],
             ),
@@ -380,11 +381,52 @@ class _MyHomeState extends State<AnchorsPage> {
                         ),
                       ),
                     ),
+                    
                   );
                 })
           ],
         ),
       ),
+   
+   // );
+
+
+     
+        // appBar: new AppBar(
+        //   title: new Text(
+        //     "On Back pressed",
+        //     style: new TextStyle(color: Colors.white),
+        //   ),
+        // ),
+        // body: new Center(
+        //   child: new Text("Home Page"),
+        // ),
+      ),
+   
     );
   }
+
+  Future<bool> _onBackPressed() {
+  return showDialog(
+    
+    context: context,
+    builder: (context) => new AlertDialog(
+      title: new Text('Are you sure?'),
+      content: new Text('Do you want to exit ERG'),
+      actions: <Widget>[
+      
+        new GestureDetector(
+          onTap: () => Navigator.of(context).pop(false),
+          child: Text("NO"),
+        ),
+        SizedBox(height: 16),
+        new GestureDetector(
+          onTap: () => Navigator.of(context).pop(true),
+          child: Text("YES"),
+        ),
+      ],
+    ),
+  ) ??
+      false;
+}
 }

@@ -349,7 +349,7 @@ class _MyHomeState extends State<AnchorsDetailsPage> {
                                                 context,
                                                 new MaterialPageRoute(
                                                     builder: (context) =>
-                                                        StockPage()));
+                                                        StockInventoryPage()));
                                           },
                                         ),
                                 ),

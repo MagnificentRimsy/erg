@@ -14,8 +14,9 @@ class CallApi{
             headers: _setHeaders()
         );
     }
+      //  + await _getToken(); 
     getData(apiUrl) async {
-       var fullUrl = _url + apiUrl + await _getToken(); 
+       var fullUrl = _url + apiUrl; 
        return await http.get(
          fullUrl, 
          headers: _setHeaders()

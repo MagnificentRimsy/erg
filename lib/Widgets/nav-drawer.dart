@@ -1,3 +1,4 @@
+import 'package:erg_app/Anchors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:erg_app/Login.dart';
@@ -66,9 +67,13 @@ class _NavDrawerState extends State<NavDrawer> {
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
+            leading: Icon(Icons.home),
+            title: Text('Home'),
+            onTap: () => {
+              // Navigator.of(context).pop()
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => AnchorsPage()))
+            },
           ),
 
           // ListTile(

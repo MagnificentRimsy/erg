@@ -1,6 +1,11 @@
 import 'package:erg_app/Anchors.dart';
 import 'package:erg_app/StockPage.dart';
+import 'package:erg_app/Widgets/nav-drawer.dart';
+import 'package:erg_app/inventoryStatus.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:erg_app/api/api.dart';
 
 class detailsPage extends StatefulWidget {
   Map<String, dynamic> value;
@@ -12,6 +17,60 @@ class detailsPage extends StatefulWidget {
 }
 
 class _detailsPageState extends State<detailsPage> {
+  var user;
+  var userData;
+  var userDetail;
+  var anchors;
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
+    _checkDailyStockTakingStatus();
+  }
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('loginRes');
+    user = json.decode(userJson);
+    userDetail = user['UserDetail'];
+    anchors = user['Anchors'];
+    // print(user['UserId']);
+    // print(userDetail['Oid']);
+    // print(user['UserId']);
+    //  print(userDetail);
+    setState(() {
+      // We use it to check if the data is null
+      userData = user;
+    });
+  }
+
+  void _checkDailyStockTakingStatus() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('loginRes');
+    user = json.decode(userJson);
+    userDetail = user['UserDetail'];
+    anchors = user['Anchors'];
+
+    print(user['UserId']);
+    print(userDetail['Oid']);
+
+     var res = await CallApi().getData('CheckDailyStockTakingStatus?userId=${userDetail['Oid']}&agentId=${user['UserId']}');
+     var body = json.decode(res.body);
+     if (body['Success']) {
+
+    localStorage.setString('inventoryStatus', json.encode(body));
+      print('======== Agent data =========');
+
+      print(localStorage.getString('inventoryStatus'));
+
+    //   // Navigator.push(
+    //   //     context, new MaterialPageRoute(builder: (context) => AnchorsPage()));
+     } else {
+    //   // _showMsg();
+       print(Text('Something Went Wrong'));
+     }
+  }
+
   Map<String, dynamic> value;
 
   _detailsPageState(this.value);
@@ -19,6 +78,7 @@ class _detailsPageState extends State<detailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: Text("Anchor Details"),
         iconTheme: IconThemeData(color: Colors.white),
@@ -29,13 +89,13 @@ class _detailsPageState extends State<detailsPage> {
         child: ListView(
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Icon(Icons.card_membership,
-                    size: 35, color: Colors.orange[400]),
+                SizedBox(width: 15),
+                Icon(Icons.home, size: 30, color: Colors.green[400]),
+                SizedBox(width: 15),
                 Text(
                   '${value['Acronym']} Distribution Center(s)',
-                  style: TextStyle(color: Colors.orange[400], fontSize: 18),
+                  style: TextStyle(color: Colors.green[400], fontSize: 20),
                 ),
               ],
             ),
@@ -258,7 +318,8 @@ class _detailsPageState extends State<detailsPage> {
                             ),
                             Row(
                               children: <Widget>[
-                                /////////// Buttons /////////////
+                                /////////// Based on the response I want to use it to control these two buttons below
+                                ///if the response is 200 it should display validate farmer else it should display Take Inventory/////////////
 
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -323,7 +384,7 @@ class _detailsPageState extends State<detailsPage> {
                                                 context,
                                                 new MaterialPageRoute(
                                                     builder: (context) =>
-                                                        StockPage()));
+                                                      StatusPage()   ));
                                           },
                                         ),
                                 ),

@@ -180,7 +180,7 @@ Container buttonSection(){
           child: Text(
             _isLoading ? 'Loading...': 'Login', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => StockPage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => StockInventoryPage()));
           },
 
           //  onPressed:emailController.text == "" || passwordController.text == "" ? null : () {
@@ -220,7 +220,7 @@ Container buttonSection(){
           _isLoading = false;
         });
         sharedPreferences.setString("token", jsonResponse['token']);
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => StockPage()), (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => StockInventoryPage()), (Route<dynamic> route) => false);
       }
     }
     else {

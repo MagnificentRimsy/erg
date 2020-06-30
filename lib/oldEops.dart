@@ -297,7 +297,7 @@ class _MyHomeState extends State<EopPage> {
                               Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (context) => StockPage()));
+                                      builder: (context) => StockInventoryPage()));
                             },
                           ),
                   ),
