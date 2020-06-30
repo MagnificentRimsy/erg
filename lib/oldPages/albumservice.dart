@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:erg_app/models/album_model.dart';
+import 'package:erg_app/oldPages/album_model.dart';
 
 class HttpService {
   final String postsURL = "https://jsonplaceholder.typicode.com/Albums";

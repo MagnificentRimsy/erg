@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:erg_app/api/webservice.dart';
-import 'package:erg_app/models/weather_model.dart';
+import 'package:erg_app/oldPages/webservice.dart';
+import 'package:erg_app/oldPages/weather_model.dart';
 import 'package:flutter/material.dart';
 
 

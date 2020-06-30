@@ -1,7 +1,7 @@
 import 'dart:convert';
 // import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:erg_app/models/weather_model.dart';
+import 'package:erg_app/oldPages/weather_model.dart';
 
 class HttpService {
   final String postsURL = "http://api.ergagro.com:112/WeatherForecast";

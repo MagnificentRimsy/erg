@@ -1,6 +1,6 @@
 import 'package:erg_app/StartScan.dart';
 import 'package:flutter/material.dart';
-import 'package:erg_app/models/album_model.dart';
+import 'package:erg_app/oldPages/album_model.dart';
 
 // void main() {
 
@@ -212,6 +212,204 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+              Divider(),
+
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(width: 15),
+                  Icon(Icons.timelapse, size: 30, color: Colors.green[400]),
+                  SizedBox(width: 15),
+                  Text(
+                    'EOP Details',
+                    style: TextStyle(color: Colors.green[400], fontSize: 20),
+                  ),
+                ],
+              ),
+
+              Padding(
+              padding: const EdgeInsets.all(5.0),
+              ////////////// 1st card///////////
+
+              child: Card(
+                elevation: 4.0,
+                color: Colors.grey[100],
+                margin:
+                    EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Container(
+                  padding: EdgeInsets.only(left: 15, top: 20, bottom: 10),
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(width: 10),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Fertilizers:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 105, top: 12),
+                            child: Text(
+                              '2435',
+                              // anchors[i]['Oid'].toString(),
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Spray:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 130, top: 12),
+                            child: Text(
+                              '243',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Harvest Equipments',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 42, top: 12),
+                            child: Text(
+                              '423',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Urea Fertilizer:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 78, top: 12),
+                            child: Text(
+                              '546',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 10),
+                            child: Text(
+                              'Planting Equipment:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 45, top: 12),
+                            child: Text(
+                              '345',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 20,
+                      ),
+                      // button was here
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+
+
+
+              Divider(),
               Container(
                 margin: EdgeInsets.only(top: 20, bottom: 30),
                 child: Center(

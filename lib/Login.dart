@@ -72,7 +72,7 @@ class _LogInState extends State<LogIn> {
                         margin: EdgeInsets.only(top: 50),
                         child: Center(
                           child: Text(
-                            "Welcome to ERGAgro",
+                            "Welcome to ERG Agro",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 23,
@@ -221,7 +221,6 @@ class _LogInState extends State<LogIn> {
       // localStorage.setString('token', body['token']);
       // localStorage.setString('customer', json.encode(body['customer']));
       localStorage.setString('loginRes', json.encode(body));
-
       // print(localStorage.getString('loginRes'));
 
       Navigator.push(

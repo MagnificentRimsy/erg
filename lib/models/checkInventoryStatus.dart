@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final checkInventoryStatus = checkInventoryStatusFromJson(jsonString);
-
 import 'dart:convert';
 
 CheckInventoryStatus checkInventoryStatusFromJson(String str) => CheckInventoryStatus.fromJson(json.decode(str));

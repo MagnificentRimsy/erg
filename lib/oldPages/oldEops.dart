@@ -1,7 +1,7 @@
 import 'package:erg_app/StockPage.dart';
 import 'package:flutter/material.dart';
 import 'package:erg_app/Widgets/nav-drawer.dart';
-import 'package:erg_app/models/eopmodel.dart';
+import 'package:erg_app/oldPages/eopmodel.dart';
 import 'package:erg_app/StartScan.dart';
 
 void main() => runApp(MaterialApp(

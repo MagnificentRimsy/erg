@@ -1,7 +1,9 @@
 import 'package:erg_app/Anchors.dart';
+import 'package:erg_app/StartScan.dart';
 import 'package:erg_app/StockPage.dart';
 import 'package:erg_app/Widgets/nav-drawer.dart';
-import 'package:erg_app/inventoryStatus.dart';
+import 'package:erg_app/oldPages/inventoryStatus.dart';
+import 'package:erg_app/oldPages/Try.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +23,8 @@ class _detailsPageState extends State<detailsPage> {
   var userData;
   var userDetail;
   var anchors;
+  var dailyStatus;
+  var dailyStocks;
   @override
   void initState() {
     _getUserInfo();
@@ -34,10 +38,7 @@ class _detailsPageState extends State<detailsPage> {
     user = json.decode(userJson);
     userDetail = user['UserDetail'];
     anchors = user['Anchors'];
-    // print(user['UserId']);
-    // print(userDetail['Oid']);
-    // print(user['UserId']);
-    //  print(userDetail);
+
     setState(() {
       // We use it to check if the data is null
       userData = user;
@@ -46,29 +47,24 @@ class _detailsPageState extends State<detailsPage> {
 
   void _checkDailyStockTakingStatus() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var userJson = localStorage.getString('loginRes');
-    user = json.decode(userJson);
-    userDetail = user['UserDetail'];
-    anchors = user['Anchors'];
 
+    print("UserId");
     print(user['UserId']);
+    print("AgentId");
     print(userDetail['Oid']);
 
-     var res = await CallApi().getData('CheckDailyStockTakingStatus?userId=${userDetail['Oid']}&agentId=${user['UserId']}');
-     var body = json.decode(res.body);
-     if (body['Success']) {
-
-    localStorage.setString('inventoryStatus', json.encode(body));
-      print('======== Agent data =========');
-
-      print(localStorage.getString('inventoryStatus'));
-
-    //   // Navigator.push(
-    //   //     context, new MaterialPageRoute(builder: (context) => AnchorsPage()));
-     } else {
-    //   // _showMsg();
-       print(Text('Something Went Wrong'));
-     }
+    var res = await CallApi().getData(
+        'CheckDailyStockTakingStatus?userId=${user['UserId']}&agentId=${userDetail['Oid']}');
+    var body = json.decode(res.body);
+    if (body['Success']) {
+      dailyStatus =
+          localStorage.setString('inventoryStatus', json.encode(body));
+      // I want to use the dailyStocks to access the nested stock items in the array
+      dailyStocks = dailyStatus['Stock'];
+    } else {
+      //   // _showMsg();
+      print(Text('Something Went Wrong'));
+    }
   }
 
   Map<String, dynamic> value;
@@ -323,6 +319,8 @@ class _detailsPageState extends State<detailsPage> {
 
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
+                                  //this is where I want to perform the check but its not working
+                                  // dailyStatus['StatusCode'] == 200
                                   child: 'InCompleted' == 'Completed'
                                       ? FlatButton(
                                           child: Padding(
@@ -352,10 +350,11 @@ class _detailsPageState extends State<detailsPage> {
                                                 context,
                                                 new MaterialPageRoute(
                                                     builder: (context) =>
-                                                        AnchorsPage()));
+                                                        StartScanPage() ));
                                             // Edit()was here
                                           },
                                         )
+                                        //if the status is not 200 then it should allow an agent to take inventory
                                       : FlatButton(
                                           child: Padding(
                                             padding: EdgeInsets.only(
@@ -384,7 +383,7 @@ class _detailsPageState extends State<detailsPage> {
                                                 context,
                                                 new MaterialPageRoute(
                                                     builder: (context) =>
-                                                      StatusPage()   ));
+                                                        StockInventoryPage() ));
                                           },
                                         ),
                                 ),

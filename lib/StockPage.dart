@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:erg_app/Anchors.dart';
-import 'package:erg_app/Details.dart';
 import 'package:erg_app/StartScan.dart';
-import 'package:erg_app/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:erg_app/ProfilePage.dart';
 import 'dart:convert';
 import 'package:erg_app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';

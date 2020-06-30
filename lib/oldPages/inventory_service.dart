@@ -15,15 +15,11 @@ class HttpService {
     user = json.decode(userJson);
     userDetail = user['UserDetail'];
     anchors = user['Anchors'];
-
-    final String inventoryStatusURL =
-        "http://api.ergagro.com:112/CheckDailyStockTakingStatus?userId=${userDetail['Oid']}&agentId=${user['UserId']}";
-
-    Response res = await get(inventoryStatusURL);
+    
+    final String inventoryStatusURL ="http://api.ergagro.com:112/CheckDailyStockTakingStatus?userId=${user['UserId']}&agentId=${userDetail['Oid']}";
+    Response res = await get(inventoryStatusURL, headers: _setHeaders());
 
     if (res.statusCode == 200) {
-      //  var body = json.decode(res.body);
-      //  localStorage.setString('inventoryStatus', json.encode(body));
       List<dynamic> body = jsonDecode(res.body);
 
       List<CheckInventoryStatus> inventoryStatus = body
@@ -33,8 +29,14 @@ class HttpService {
           .toList();
 
       return inventoryStatus;
+      
     } else {
-      throw "Can't get inventoryStatus.";
+      print("${res.statusCode}");
     }
   }
+
+  _setHeaders() => {
+    'Content-type' : 'application/json',
+    'Accept' : 'application/json',
+  };
 }
