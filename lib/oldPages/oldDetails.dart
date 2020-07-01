@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:erg_app/models/checkInventoryStatus.dart';
 import 'package:erg_app/api/api.dart';
 
 class detailsPage extends StatefulWidget {
@@ -69,26 +68,6 @@ class _detailsPageState extends State<detailsPage> {
     }
   }
 
-  Future<CheckInventoryStatus> checkDailyStatus() async {
-    
-    final queryParameters = {
-      'userId': 'b6caf34c-a425-4710-a3ee-aa22a382882a',
-      'agentId': '57',
-    };
-
-    final url = new Uri.http('http://api.ergagro.com:112',
-          '/CheckDailyStockTakingStatus', queryParameters);
-
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final jsonStatus = jsonDecode(response.body);
-      return CheckInventoryStatus.fromJson(jsonStatus);
-    } else {
-      throw Exception();
-    }
-  }
-
   //this allows me to iterate over the D.C.
   Map<String, dynamic> value;
   _detailsPageState(this.value);
@@ -106,18 +85,6 @@ class _detailsPageState extends State<detailsPage> {
         padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
         child: ListView(
           children: <Widget>[
-            FutureBuilder<CheckInventoryStatus>(
-              future: checkDailyStatus(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final status = snapshot.data;
-                  return Text("Name: ${status.message}");
-                } else{
-                  return Text(snapshot.error.toString());
-                }
-                
-              },
-            ),
             Row(
               children: <Widget>[
                 SizedBox(width: 15),
@@ -356,7 +323,7 @@ class _detailsPageState extends State<detailsPage> {
                                   padding: const EdgeInsets.all(10.0),
                                   //this is where I want to perform the check but its not working
                                   // dailyStatus['StatusCode'] == 200
-                                  child: 'InCompleted' != 'Completed'
+                                  child: 'InCompleted' == 'Completed'
                                       ? FlatButton(
                                           child: Padding(
                                             padding: EdgeInsets.only(
